@@ -1,6 +1,9 @@
 #include "defobj.h"
 #include "iniobj.h"
 
+#define CHAR12 12
+#define CHAR24 24
+
 int main(int argc, char* argv[])
 {
 	socklen_t saddrl_cli;
@@ -53,10 +56,19 @@ int main(int argc, char* argv[])
 		//données à envoyer
 		obj** tab = malloc(sizeof(obj)*tablen);
 		initObj(tab);
-		int i = 0;
-		while (tab[i]->iqt != -1) {
-			send(sd, tab[i], sizeof(obj), 0);
-			i++;		
+		int i=0;
+		while(tab[i]->iqt!=-1){
+		if (send(sd, tab[i]->char_12, CHAR12, 0) != CHAR12){
+			perror("send()");
+			exit(-1);	
+		}
+		sleep(1); //bizarre, mais sinon le serveur perd des données
+		if (send(sd, tab[i]->char_24, CHAR24, 0) != CHAR24){
+			perror("send()");
+			exit(-1);	
+		}
+		sleep(1);
+		i++;
 		}
 		close(sd);		
 	}

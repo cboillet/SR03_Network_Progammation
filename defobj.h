@@ -15,7 +15,7 @@
 #include <sys/wait.h> 
 
 
- typedef struct { 
+typedef struct { 
 	char char_12[12];
 	char char_24[24];
 	int ii;

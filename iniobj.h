@@ -2,8 +2,7 @@
 #define tablen 10
 
 
- void initObj(obj** tableau_obj){	
-
+void initObj(obj** tableau_obj){	
 	int i;
 	for(i=0; i<tablen; i++){
 		tableau_obj[i] = malloc(sizeof(obj));		
