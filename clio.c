@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
 			perror("send() param");
 			exit(-1);	
 		}
+		sleep(1);
 		
 		//envoi des données
 		//while(tab[i]->iqt!=-1){
