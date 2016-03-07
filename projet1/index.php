@@ -1,5 +1,7 @@
 <html>
 <head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
 	<title>Trombinoscope SR03</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script language="javascript">
@@ -14,9 +16,12 @@
 
 <header>
 	<form name="formulaire" action="index.php" method="post">
-		<input type="text" name="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
-		<input type="text" name="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/> <br/>
-		<input type="submit" value="chercher" onClick="controle(formulaire)"/>
+		<div class="col-md-4">
+			<input class="form-control" type="text" name="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
+			<input class="form-control" type="text" name="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/> <br/>
+		<input class="btn btn-default" type="submit" value="chercher" onClick="controle(formulaire)"/>
+		</div>
+		
 	</form>
 </header>
 
