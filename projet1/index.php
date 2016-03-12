@@ -4,6 +4,8 @@
 
 	<title>Trombinoscope SR03</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<script language="javascript">
 		function controle(form) {
 			var prenom = form.prenom.value;
@@ -15,17 +17,23 @@
 </head>
 
 <header>
-	<form name="formulaire" action="index.php" method="post">
+
+</header>
+
+<body>
+	<div class="container-fluid">
+	  <h1>Trombinoscope UTC</h1>
+	  <div>
+		<form name="formulaire" action="index.php" method="post">
 		<div class="col-md-4">
 			<input class="form-control" type="text" name="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
 			<input class="form-control" type="text" name="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/> <br/>
 		<input class="btn btn-default" type="submit" value="chercher" onClick="controle(formulaire)"/>
 		</div>
 		
-	</form>
-</header>
-
-<body>
+		</form>
+	  </div>
+	</div>
 <?php
 	include'utils.php';
 	if ($_POST["prenom"] && $_POST["nom"])
