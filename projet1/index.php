@@ -15,7 +15,7 @@
 <header>
 </header>
 
-<body style="padding-top:70px; background-color: #F5F5F5;">
+<body style="padding-top:80px; padding-bottom:20px; background-color: #F5F5F5;">
 	<!-- La NavBar -->
 	<nav class="navbar navbar-default navbar-fixed-top" style="background-color: #B0C4DE;">
 		<div class="container">
@@ -57,12 +57,11 @@
 				//récupération des infos
 				$content = file_get_contents('https://webapplis.utc.fr/Trombi_ws/mytrombi/result?nom='.$_POST["nom"].'&prenom='.$_POST["prenom"]);		
 				$result = json_decode($content);
-				var_dump($result);
 				//affichage des données
-				echo '<div class="container"> <div class="row">';
+				echo '<div class="container"><div class="row">';
 				foreach ($result as $r) {
 					$urlPhoto = "https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur_mini?username=".$r->login;
-					echo '<div class="col-sm-6 col-md-4 col-lg-2" style="padding-top: 10px; text-align: center;">';
+					echo '<div class="col-sm-4 col-md-3 col-lg-2" style="text-align: center; height: 280px;">';
 						echo '<strong>'.$r->nom.'</strong><br/>';						
 						if(checkRemoteFile($urlPhoto) == FALSE)	{
 							echo '<img src="default.png"/>';
@@ -72,19 +71,18 @@
 						}
 						echo '<br/>'.$r->structure.'<br/>';
 						echo '<A HREF="mailto:'.$r->mail.'">'.$r->mail.'</A>';
-					echo "</div>";
-				
+					echo "</div>";				
 				}
 				echo '</div></div>';
 			}
 		}
 	?>
 	
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script language="javascript">
 		$('form').submit(function(e){
 			e.preventDefault();
