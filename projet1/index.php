@@ -29,39 +29,49 @@
 				<a class="navbar-brand" href="#"><img style="max-height:35px; margin-top:-5px;" src="https://upload.wikimedia.org/wikipedia/en/f/f6/UTC_logo.png"></a>
 				<a class="navbar-brand" style="color: #696969;" href="#">TrombiUTC</a>
 			</div>
-			<div class="collapse navbar-collapse" id="to-be-collabsed">
-				<form class="navbar-form navbar-right" id="formulaire" name="formulaire" action="index.php" method="post" >
-					<div id="champ_prenom" class="form-group">
-						<label for="prenom" style="color: #696969;" class="control-label">Prénom</label>
-						<input class="form-control" type="text" name="prenom" id="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
-					</div>
-					<div id="champ_nom" class="form-group">
-						<label for="nom" style="color: #696969;" class="control-label">Nom</label>
-						<input class="form-control" type="text" name="nom" id="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/>
-					</div>
-					<div class="form-group">
-						<button class="btn btn-default" type="submit" onClick="controle(formulaire)">chercher</button>
-					</div>
-				</form>
+			<div class="collapse navbar-collapse navbar-right" id="to-be-collabsed">
+				<ul class="nav navbar-nav">
+        				<li class="active"><a href="#">Par nom/prénom<span class="sr-only">(current)</span></a></li>
+					<li><a href="form2.php">Par structure<span class="sr-only">(current)</span></a></li>
+				</ul>
 			</div>
 		</div>
 	</nav>
 
+	<!-- formulaire par nom / prenom -->
+	<div class="container">
+		<form class="form-inline" id="formulaire" name="formulaire" action="index.php" method="post" >
+			<div id="champ_prenom" class="form-group">
+				<label for="prenom" style="color: #696969;" class="control-label">Prénom</label>
+				<input class="form-control" type="text" name="prenom" id="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
+			</div>
+			<div id="champ_nom" class="form-group">
+				<label for="nom" style="color: #696969;" class="control-label">Nom</label>
+				<input class="form-control" type="text" name="nom" id="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-default" type="submit" onClick="controle(formulaire)">chercher</button>
+			</div>
+		</form>
+	</div>
+	<br>
+
+
 	<!-- L'affichage des résultats -->
 	<?php
 		include'utils.php';
-		$url = "https://webapplis.utc.fr";
-		if(Visit($url)){
-			if ($_POST["prenom"] && $_POST["nom"])
-			{
+		if ($_POST["prenom"] && $_POST["nom"])
+		{
+			$url = "https://webapplis.utc.fr"."/Trombi_ws/mytrombi/result?nom=".$_POST["nom"]."&prenom=".$_POST	["prenom"] ;
+			if(Visit($url)){
 				//récupération des infos
-				$content = file_get_contents('https://webapplis.utc.fr/Trombi_ws/mytrombi/result?nom='.$_POST["nom"].'&prenom='.$_POST["prenom"]);		
+				$content = file_get_contents($url);		
 				$result = json_decode($content);
 				//affichage des données
 				echo '<div class="container"><div class="row">';
 				foreach ($result as $r) {
 					$urlPhoto = "https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur_mini?username=".$r->login;
-					echo '<div class="col-sm-4 col-md-3 col-lg-2" style="text-align: center; height: 280px;">';
+					echo '<div class="col-sm-4 col-md-3" style="text-align: center; height: 280px;">';
 						echo '<strong>'.$r->nom.'</strong><br/>';						
 						if(checkRemoteFile($urlPhoto) == FALSE)	{
 							echo '<img src="default.png"/>';
