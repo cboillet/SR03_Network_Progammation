@@ -93,34 +93,19 @@
 	<script language="javascript">
 		$('form').submit(function(e){
 			e.preventDefault();
-			var valid = false;
 
 			var prenom = document.getElementById("prenom").value;
 			var nom = document.getElementById("nom").value;
 			if (prenom.length >= 2 || nom.length >= 2){
-				valid = true;
+				this.submit();
 			}
 			else
 			{
 				document.getElementById("champ_prenom").className = "form-group has-error";
 				document.getElementById("champ_nom").className = "form-group has-error";
 			}
-
-			if (valid) 
-				this.submit();
-		});
-	/*
-		function controle(form) {
-			var prenom = form.prenom.value;
-			var nom = form.nom.value;
-			if (prenom.length < 2 && nom.length < 2) {
 				
-			}
-			else {
-				document.getElementById("champ_prenom").className = "form-group";
-				document.getElementById("champ_nom").className = "form-group";
-			}
-		}*/
+		});
 	</script>
 </body>
 </html>
