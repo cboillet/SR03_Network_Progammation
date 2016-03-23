@@ -7,6 +7,11 @@
 
 	<!-- Bootstrap core CSS -->
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/bootstrap-select.js"></script>
 </head>
 
 <header>
@@ -28,38 +33,45 @@
 			</div>
 			<div class="collapse navbar-collapse navbar-right" id="to-be-collabsed">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Par nom/prénom<span class="sr-only">(current)</span></a></li>
-					<li><a href="form2.php">Par structure<span class="sr-only">(current)</span></a></li>
+        			<li><a href="index.php">Par nom/prénom<span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="#">Par structure<span class="sr-only">(current)</span></a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
-	<!-- formulaire par nom / prenom -->
+	
+	<!-- formulaire par structure -->
 	<div class="container">
-		<form class="form-inline" id="formulaire" name="formulaire" action="index.php" method="post" >
-			<div id="champ_prenom" class="form-group">
-				<label for="prenom" style="color: #696969;" class="control-label">Prénom</label>
-				<input class="form-control" type="text" name="prenom" id="prenom" placeholder="Prénom" value="<?php if ($_POST['prenom']) echo $_POST['prenom']; ?>"/>
-			</div>
-			<div id="champ_nom" class="form-group">
-				<label for="nom" style="color: #696969;" class="control-label">Nom</label>
-				<input class="form-control" type="text" name="nom" id="nom" placeholder="Nom" value="<?php if ($_POST['nom']) echo $_POST['nom']; ?>"/>
-			</div>
-			<div class="form-group">
-				<button class="btn btn-default" type="submit">chercher</button>
-			</div>
+		<form class="form-inline" id="formulaire" name="formulaire" action="form2.php" method="post" >
+			<select class="selectpicker show-tick form-control" name="structure" onChange="request(this)">
+				<option value="0" selected>---- structure ----</option>
+				<?php
+					include'utils.php';
+					echo '';
+					$url = "https://webapplis.utc.fr/Trombi_ws/mytrombi/structpere";
+					if(Visit($url)){
+						//récupération des infos
+						$content = file_get_contents($url);		
+						$result = json_decode($content);
+						foreach ($result as $r) {
+							echo '<option value="'.$r->structure->structId.'">'.$r->structureLibelle.'</option>';									
+						}
+					}
+				?>
+			</select>
+			<select class="selectpicker show-tick form-control" name="sous_structure" id="sous_structure">
+				<option value="0" selected>---- sous-structure ----</option>
+			</select>
+			<button class="btn btn-default" type="submit">chercher</button>
 		</form>
 	</div>
-	<br>
-
+	<br/>
 
 	<!-- L'affichage des résultats -->
 	<?php
-		include'utils.php';
-		if ($_POST["prenom"] || $_POST["nom"])
+		if ($_POST["structure"] && $_POST["sous_structure"])
 		{
-			$url = "https://webapplis.utc.fr"."/Trombi_ws/mytrombi/result?nom=".$_POST["nom"]."&prenom=".$_POST	["prenom"] ;
+			$url = "https://webapplis.utc.fr/Trombi_ws/mytrombi/resultstruct?pere=".$_POST["structure"]."&fils=".$_POST["sous_structure"];
 			if(Visit($url)){
 				//récupération des infos
 				$content = file_get_contents($url);		
@@ -88,39 +100,25 @@
 	<!-- Bootstrap core JavaScript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
+	
 	<script language="javascript">
-		$('form').submit(function(e){
-			e.preventDefault();
-			var valid = false;
-
-			var prenom = document.getElementById("prenom").value;
-			var nom = document.getElementById("nom").value;
-			if (prenom.length >= 2 || nom.length >= 2){
-				valid = true;
-			}
-			else
-			{
-				document.getElementById("champ_prenom").className = "form-group has-error";
-				document.getElementById("champ_nom").className = "form-group has-error";
-			}
-
-			if (valid) 
-				this.submit();
-		});
-	/*
-		function controle(form) {
-			var prenom = form.prenom.value;
-			var nom = form.nom.value;
-			if (prenom.length < 2 && nom.length < 2) {
-				
-			}
-			else {
-				document.getElementById("champ_prenom").className = "form-group";
-				document.getElementById("champ_nom").className = "form-group";
-			}
-		}*/
+		function request(oSelect) {
+			var value = oSelect.options[oSelect.selectedIndex].value; //id selectionné
+			if (window.XMLHttpRequest)
+				xhr = new XMLHttpRequest(); 
+			else if (window.ActiveXObject)
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+					document.getElementById("sous_structure").innerHTML = xhr.responseText;
+				}
+			};
+			
+			xhr.open("POST", "sous_structure.php", true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.send("IdStructure=" + value);
+		}
 	</script>
 </body>
 </html>
