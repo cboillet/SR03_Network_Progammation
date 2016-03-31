@@ -30,7 +30,7 @@
 			<div class="collapse navbar-collapse navbar-right" id="to-be-collabsed">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#" style="color: black; background-color: #F5F5F5;">Par nom/prénom<span class="sr-only">(current)</span></a></li>
-					<li><a href="form2.php" style="color: white;">Par structure<span class="sr-only">(current)</span></a></li>
+					<li><a href="form2.php" class="fff" style="color: white;">Par structure<span class="sr-only">(current)</span></a></li>
 				</ul>
 			</div>
 		</div>
