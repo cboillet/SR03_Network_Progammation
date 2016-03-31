@@ -1,0 +1,28 @@
+div .div_result
+{
+	border-radius: 5px;
+	border: 1px solid #778899;
+	background: #B0C4DE;
+	padding: 20px;
+	margin-bottom: 30px;
+	height: 350px;
+}
+
+.navbar
+{
+	background: #20B2AA;
+}
+
+body
+{
+	padding-top:80px; 
+	padding-bottom:20px; 
+	background-color: #F5F5F5;
+}
+
+.navbar-nav a :hover
+{
+	color: black;
+}
+
+
