@@ -1,5 +1,48 @@
 
 <?php
+function printProfile($r, $i)
+{
+	$urlPhoto = "https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur_mini?username=".$r->login;
+
+	echo '<div class="col-md-3 col-md-offset-1 div_result">';
+		//nom + photo
+		echo '<div style="text-align: center;">';
+			echo '<strong>'.$r->nom.'</strong><br/>';						
+			if(checkRemoteFile($urlPhoto) == FALSE)	{
+				echo '<img src="default.png" class="img-rounded"/>';
+			}
+			else {
+				echo '<img src="'.$urlPhoto.'" class="img-rounded"/>';
+			}
+		echo '</div><br/>';
+
+		//informations complémentaires
+		$tel = getTel($r);
+		if ($tel != "")
+			echo '<span class="glyphicon glyphicon-earphone"></span> '.$tel.'<br/>';
+		if ($r->structure != "")
+			echo '<strong>'.$r->structure.'</strong></br>';
+		if ($r->sousStructure != "")
+			echo '<em>'.$r->sousStructure.'</em></br>';
+		if ($r->poste != "")
+			echo $r->poste.'<br/>';
+		if ($r->mail != "")
+			echo '<span class="glyphicon glyphicon-envelope"></span> <a href="mailto:'.$r->mail.'">'.$r->mail.'</A>';
+	echo "</div>";
+}
+
+function getTel($r)
+{
+	$tel = ($r->tel != "")? $r->tel : "";
+	if ($r->tel2 != "")
+	{
+		if ($tel != "")
+			$tel = $tel." / ";
+		$tel = $tel.$r->tel2;
+	}
+	return $tel;
+}
+
 function checkRemoteFile($url)
 {
 	$res=getimagesize($url);
