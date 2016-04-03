@@ -5,7 +5,7 @@
 		//récupération des infos
 		$content = file_get_contents($url);		
 		$result = json_decode($content);
-		echo '<option value="0">---- sous-structure ----</option>';
+		echo '<option value="0">Toutes les sous-structures</option>';
 		foreach ($result as $r) {
 			echo '<option value="'.$r->structure->structId.'">'.$r->structureLibelle.'</option>';							
 		}

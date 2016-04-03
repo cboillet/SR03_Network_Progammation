@@ -5,7 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Trombinoscope SR03</title>
 
-	<!-- Bootstrap core CSS -->
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="design.css" rel="stylesheet">
 </head>
@@ -58,7 +57,7 @@
 	<!-- L'affichage des résultats -->
 	<?php
 		include'utils.php';
-		if ($_POST["prenom"] || $_POST["nom"])
+		if (isset($_POST["prenom"]) || isset($_POST["nom"]))
 		{
 			$url = "https://webapplis.utc.fr/Trombi_ws/mytrombi/result?nom=".$_POST["nom"]."&prenom=".$_POST	["prenom"] ;
 			if(Visit($url)){

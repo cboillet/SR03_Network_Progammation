@@ -3,17 +3,14 @@
 function printProfile($r, $i)
 {
 	$urlPhoto = "https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur_mini?username=".$r->login;
+	if(checkRemoteFile($urlPhoto) == FALSE)
+		$urlPhoto = "default.png";
 
 	echo '<div class="col-md-3 col-md-offset-1 div_result">';
 		//nom + photo
 		echo '<div style="text-align: center;">';
 			echo '<strong>'.$r->nom.'</strong><br/>';						
-			if(checkRemoteFile($urlPhoto) == FALSE)	{
-				echo '<img src="default.png" class="img-rounded"/>';
-			}
-			else {
-				echo '<img src="'.$urlPhoto.'" class="img-rounded"/>';
-			}
+			echo '<img src="'.$urlPhoto.'" class="img-rounded"/>';
 		echo '</div><br/>';
 
 		//informations complémentaires
@@ -50,16 +47,16 @@ function checkRemoteFile($url)
 }
 
 function Visit($url){
-       $ch=curl_init();
-       curl_setopt ($ch, CURLOPT_URL,$url);
-       curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-       curl_setopt ($ch,CURLOPT_VERBOSE,true);
-       curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-       curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, FALSE);
-       curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, FALSE);
-       $page=curl_exec($ch);
-       $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-       curl_close($ch);
+	$ch=curl_init();
+	curl_setopt ($ch, CURLOPT_URL,$url);
+	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt ($ch,CURLOPT_VERBOSE,true);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, FALSE);
+	$page=curl_exec($ch);
+	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
  	if($httpcode>=200 && $httpcode<300) return true;
 	else{	
 		echo "<br/> error code ".$httpcode;

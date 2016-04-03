@@ -5,15 +5,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Trombinoscope SR03</title>
 
-	<!-- Bootstrap core CSS -->
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="design.css" rel="stylesheet">
 </head>
 
 <header>
 </header>
 
-<body style="padding-top:80px; padding-bottom:20px; background-color: #F5F5F5;">
+<body>
 	<!-- La NavBar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
@@ -38,12 +38,10 @@
 	
 	<!-- formulaire par structure -->
 	<div class="container">
-		<form class="form-inline" id="formulaire" name="formulaire" action="form2.php" method="post" >
-			<select class="selectpicker show-tick form-control" name="structure" onChange="request(this)">
-				<option value="0" selected>---- structure ----</option>
+		<form id="formulaire" name="formulaire" action="form2.php" method="post" >
+			<select class="selectpicker" name="structure" data-width="auto" data-size="10" data-dropup-auto="false" data-header="Choisir une structure" onChange="request(this)">				
 				<?php
 					include'utils.php';
-					echo '';
 					$url = "https://webapplis.utc.fr/Trombi_ws/mytrombi/structpere";
 					if(Visit($url)){
 						//récupération des infos
@@ -55,8 +53,8 @@
 					}
 				?>
 			</select>
-			<select class="selectpicker show-tick form-control" name="sous_structure" id="sous_structure">
-				<option value="0" selected>---- sous-structure ----</option>
+			<select class="selectpicker" name="sous_structure" data-width="auto" data-size="10" data-dropup-auto="false" data-header="Choisir une sous structure" id="sous_structure">
+				<option value="0" selected><strong>Toutes les sous-structures</strong></option>
 			</select>
 			<button class="btn btn-default" type="submit">chercher</button>
 		</form>
@@ -65,7 +63,7 @@
 
 	<!-- L'affichage des résultats -->
 	<?php
-		if ($_POST["structure"] && $_POST["sous_structure"])
+		if (isset($_POST["structure"]) && isset($_POST["sous_structure"]))
 		{
 			$url = "https://webapplis.utc.fr/Trombi_ws/mytrombi/resultstruct?pere=".$_POST["structure"]."&fils=".$_POST["sous_structure"];
 			if(Visit($url)){
@@ -94,6 +92,7 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<script language="javascript">
 		function request(oSelect) {
 			var value = oSelect.options[oSelect.selectedIndex].value; //id selectionné
@@ -104,7 +103,12 @@
 			
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-					document.getElementById("sous_structure").innerHTML = xhr.responseText;
+					var mySelect = $('#sous_structure');
+					mySelect.empty();
+					mySelect.append(xhr.responseText);
+					//mySelect.innerHTML = xhr.responseText;
+					mySelect.selectpicker('refresh');
+					//document.getElementById("sous_structure").innerHTML = xhr.responseText;
 				}
 			};
 			
